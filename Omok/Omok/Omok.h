@@ -27,4 +27,11 @@ private:
 
 	void InitializeBoard();
 	void ColorChange();
+
+	bool CanSetAsRenzu();
+	//if sigma[k=1, 3] (fromX + dirX*k, fromY + dirY*k) == now
+	// count++
+	//else if this loc != Null
+	//	return count
+	int CountLine(int fromX, int fromY, int dirX, int dirY);
 };
