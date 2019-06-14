@@ -29,9 +29,8 @@ private:
 	void ColorChange();
 
 	bool CanSetAsRenzu(int x, int y, Color now);
-	//if sigma[k=1, 3] (fromX + dirX*k, fromY + dirY*k) == now
-	// count++
-	//else if this loc != Null
-	//	return count
-	int CountLine(int fromX, int fromY, int dirX, int dirY);
+	//if Color::Null || other color    break;
+	int CountLine(int fromX, int fromY, int dirX, int dirY, Color now);
+	//if other color	 break;
+	int CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now);
 };

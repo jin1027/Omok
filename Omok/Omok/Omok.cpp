@@ -62,11 +62,17 @@ bool Omok::CanSetAsRenzu(int x, int y, Color now)
 {
 	if (now == Color::Null)
 		return false;
+	if (now == Color::BLACK)//check 3,3 or 4,4
+	{
+
+	}
+	int count = 0;
+	
 
 	return false;
 }
 
-int Omok::CountLine(int fromX, int fromY, int dirX, int dirY)
+int Omok::CountLine(int fromX, int fromY, int dirX, int dirY, Color now)
 {
 	int count = 0;
 	int re;
@@ -84,4 +90,10 @@ int Omok::CountLine(int fromX, int fromY, int dirX, int dirY)
 			return count;
 	}
 	return count;
+}
+
+int Omok::CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now)
+{
+
+	return 0;
 }
