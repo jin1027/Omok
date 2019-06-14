@@ -6,7 +6,7 @@ enum class Color
 {
 	BLACK, WHITE, Null
 };
-const int boardLen = 19;
+const int boardLen = 15;
 class Omok
 {
 public:
