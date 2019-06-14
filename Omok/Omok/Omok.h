@@ -28,7 +28,7 @@ private:
 	void InitializeBoard();
 	void ColorChange();
 
-	bool CanSetAsRenzu();
+	bool CanSetAsRenzu(int x, int y, Color now);
 	//if sigma[k=1, 3] (fromX + dirX*k, fromY + dirY*k) == now
 	// count++
 	//else if this loc != Null

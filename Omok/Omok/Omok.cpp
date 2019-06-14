@@ -35,7 +35,9 @@ bool Omok::Set(Location loc)
 
 bool Omok::Set(int x, int y)
 {
-	//TODO
+	if (board[x][y] != Color::Null)
+		return false;
+	return CanSetAsRenzu(x, y, now);
 }
 
 void Omok::SetNow(Color c)
@@ -56,8 +58,11 @@ void Omok::ColorChange()
 	return;
 }
 
-bool Omok::CanSetAsRenzu()
+bool Omok::CanSetAsRenzu(int x, int y, Color now)
 {
+	if (now == Color::Null)
+		return false;
+
 	return false;
 }
 
