@@ -30,7 +30,7 @@ private:
 	Color winner = Color::Null;
 
 	void InitializeBoard();
-	void ColorChange();
+	void ChangeNow();
 
 	bool CanSetAsRenzu(int x, int y, Color now);
 	//if Color::Null || other color    break;

@@ -63,7 +63,7 @@ bool Omok::IsGameEnd()
 	return gameEnd;
 }
 
-void Omok::ColorChange()
+void Omok::ChangeNow()
 {
 	if (now == Color::BLACK)
 		now = Color::WHITE;
@@ -77,23 +77,61 @@ bool Omok::CanSetAsRenzu(int x, int y, Color now)
 	if (now == Color::Null)
 		return false;
 	int count = 0;
+	bool is3344 = false;
 	if (now == Color::BLACK)//check 3,3 or 4,4
 	{
+		int is3 = 0;
+		int is4 = 0;
 
+		count = CountLine(x, y, 1, 0, now);
+		if (count == 3)
+			is3++;
+		if (count == 4)
+			is4++;
+		count = CountLine(x, y, 1, 1, now);
+		if (count == 3)
+			is3++;
+		if (count == 4)
+			is4++;
+		count = CountLine(x, y, 1, -1, now);
+		if (count == 3)
+			is3++;
+		if (count == 4)
+			is4++;
+		if (is3 >= 2 || is4 >= 4)
+			is3344 = true;
 	}
 
 	//check win?
 	if (now == Color::BLACK)
 	{
-		count += CountLine(x, y, 1, 0, now);
+		count = CountLine(x, y, 1, 0, now);
 		if (count == 5)
 			goto win;
+		count = CountLine(x, y, 1, 1, now);
+		if (count == 5)
+			goto win;
+		count = CountLine(x, y, 1, -1, now);
+		if (count == 5)
+			goto win;
+		if (is3344)
+			return false;
 	}
 	else
 	{
-
+		count = CountLine(x, y, 1, 0, now);
+		if (count >= 5)
+			goto win;
+		count = CountLine(x, y, 1, 1, now);
+		if (count >= 5)
+			goto win;
+		count = CountLine(x, y, 1, -1, now);
+		if (count >= 5)
+			goto win;
 	}
 
+	board[x][y] = now;
+	ChangeNow();
 
 	return false;
 win:
