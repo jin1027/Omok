@@ -49,7 +49,6 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		BitBlt(ps.hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, buffer, 0, 0, SRCCOPY);
 		EndPaint(winHandle, &ps);
 		return 0;
-	case WM_LBUTTONDOWN:
 	case WM_DESTROY:
 		DeleteDC(buffer);
 		DeleteObject(bitmap);
@@ -60,14 +59,12 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int CmdShow)
+void SetWindowClass(WNDCLASSEX& winc)
 {
-	WNDCLASSEX winc;
 	winc.cbSize = sizeof(winc);
 	winc.style = 0;
 	winc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	winc.hInstance = hInstance;
+	winc.hInstance = instance;
 	winc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	winc.cbClsExtra = 0;
 	winc.cbWndExtra = 0;
@@ -76,21 +73,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	winc.lpszClassName = CLASSNAME;
 	winc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 	winc.lpfnWndProc = winProc;
-	if (!(RegisterClassEx(&winc)))
-	{
-		PrintError(L"Cannot register class");
-		return 0;
-	}
-	instance = hInstance;
-	winHandle = CreateWindowEx(NULL, CLASSNAME, WINDOWNAME, WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, NULL, hInstance, NULL);
-	ShowWindow(winHandle, CmdShow);
-	UpdateWindow(winHandle);
+}
 
+void MessageLoop()
+{
 	MSG msg;
 	long time, time2;
 	time = clock();
 
-	bool b = false, changed = false;
 	while (1)
 	{
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -98,7 +88,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			if (msg.message == WM_QUIT)
 			{
 				PostQuitMessage(0);
-				goto QUIT;
+				return;
 			}
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
@@ -108,7 +98,28 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			continue;
 		InvalidateRect(winHandle, NULL, true);
 	}
-QUIT:
+}
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int CmdShow)
+{
+	WNDCLASSEX winc;
+	instance = hInstance;
+	SetWindowClass(winc);
+
+	if (!(RegisterClassEx(&winc)))
+	{
+		PrintError(L"Cannot register class");
+		return 0;
+	}
+
+	winHandle = CreateWindowEx(NULL, CLASSNAME, WINDOWNAME, WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 0, 0, 
+		WINDOW_WIDTH, WINDOW_HEIGHT, NULL, NULL, hInstance, NULL);
+
+	ShowWindow(winHandle, CmdShow);
+	UpdateWindow(winHandle);
+
+	//return : quitMessage came
+	MessageLoop();
 	UnregisterClass(CLASSNAME, hInstance);
 	return 0;
 }
