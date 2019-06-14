@@ -184,6 +184,7 @@ int Omok::CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now)
 {
 	int count = 0;
 	int re;
+	bool wasNull = false;
 	Color color;
 
 	int tempX = fromX;
@@ -206,9 +207,14 @@ int Omok::CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now)
 				continue;
 			}
 			else if (color == Color::Null)
+			{
+				if (wasNull)
+					return count;
+				wasNull = true;
 				continue;
-			else
-				break;
+			}
+			else//other color : return 0;
+				return 0;
 		}
 
 		fromX = tempX;

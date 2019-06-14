@@ -36,8 +36,14 @@ private:
 	//if Color::Null || other color    break;
 	//it also count opposite dir.
 	int CountLine(int fromX, int fromY, int dirX, int dirY, Color now);
-	//if other color	 break;
-	//it also count opposite dir.
+	/*
+	if other color	 return 0;
+	if Null color  continue
+	Null can only one
+	it also count opposite dir.
+	1
+	only call for check 33, 44
+	*/
 	int CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now);
 	bool IsInvalidLoc(int x, int y);
 };
