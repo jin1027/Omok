@@ -69,7 +69,9 @@ bool Omok::CanSetAsRenzu(int x, int y, Color now)
 
 	}
 	int count = 0;
-	
+	count += CountLine(x, y, 1, 0, now);
+	count += CountLine(x, y, -1, 0, now);
+
 
 	return false;
 }
@@ -80,24 +82,35 @@ int Omok::CountLine(int fromX, int fromY, int dirX, int dirY, Color now)
 	int re;
 	Color color;
 
-	for (re = 1; ; re++)
+	int tempX = fromX;
+	int tempY = fromY;
+
+	for (int reverse = 0; reverse < 2; reverse++)
 	{
-		fromX += dirX;
-		fromY += dirY;
-
-		if (IsInvalidLoc(fromX, fromY))
-			return count;
-
-		color = board[fromX][fromY];
-		if (color == now)
+		for (re = 1; ; re++)
 		{
-			count++;
-			continue;
+			fromX += dirX;
+			fromY += dirY;
+
+			if (IsInvalidLoc(fromX, fromY))
+				break;
+
+			color = board[fromX][fromY];
+			if (color == now)
+			{
+				count++;
+				continue;
+			}
+			else if (color != Color::Null)
+				break;
+			else
+				break;
 		}
-		else if (color != Color::Null)
-			return count;
-		else
-			return count;
+
+		fromX = tempX;
+		fromY = tempY;
+		dirX = -dirX;
+		dirY = -dirY;
 	}
 	return count;
 }
@@ -108,24 +121,35 @@ int Omok::CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now)
 	int re;
 	Color color;
 
-	for (re = 1; ; re++)
+	int tempX = fromX;
+	int tempY = fromY;
+
+	for (int reverse = 0; reverse < 2; reverse++)
 	{
-		fromX += dirX;
-		fromY += dirY;
-
-		if (IsInvalidLoc(fromX, fromY))
-			return count;
-
-		color = board[fromX][fromY];
-		if (color == now)
+		for (re = 1; ; re++)
 		{
-			count++;
-			continue;
+			fromX += dirX;
+			fromY += dirY;
+
+			if (IsInvalidLoc(fromX, fromY))
+				break;
+
+			color = board[fromX][fromY];
+			if (color == now)
+			{
+				count++;
+				continue;
+			}
+			else if (color == Color::Null)
+				continue;
+			else
+				break;
 		}
-		else if (color != Color::Null)
-			continue;
-		//it is other color
-		return count;
+
+		fromX = tempX;
+		fromY = tempY;
+		dirX = -dirX;
+		dirY = -dirY;
 	}
 	return count;
 }

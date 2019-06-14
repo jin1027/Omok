@@ -30,8 +30,10 @@ private:
 
 	bool CanSetAsRenzu(int x, int y, Color now);
 	//if Color::Null || other color    break;
+	//it also count opposite dir.
 	int CountLine(int fromX, int fromY, int dirX, int dirY, Color now);
 	//if other color	 break;
+	//it also count opposite dir.
 	int CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now);
 	bool IsInvalidLoc(int x, int y);
 };
