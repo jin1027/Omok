@@ -26,6 +26,8 @@ void Omok::NewGame()
 {
 	this->InitializeBoard();
 	now = Color::BLACK;
+	gameEnd = false;
+	winner = Color::Null;
 }
 
 bool Omok::Set(Location loc)
@@ -51,6 +53,16 @@ Color Omok::GetNow()
 	return now;
 }
 
+Color Omok::GetWinner()
+{
+	return winner;
+}
+
+bool Omok::IsGameEnd()
+{
+	return gameEnd;
+}
+
 void Omok::ColorChange()
 {
 	if (now == Color::BLACK)
@@ -64,16 +76,31 @@ bool Omok::CanSetAsRenzu(int x, int y, Color now)
 {
 	if (now == Color::Null)
 		return false;
+	int count = 0;
 	if (now == Color::BLACK)//check 3,3 or 4,4
 	{
 
 	}
-	int count = 0;
-	count += CountLine(x, y, 1, 0, now);
-	count += CountLine(x, y, -1, 0, now);
+
+	//check win?
+	if (now == Color::BLACK)
+	{
+		count += CountLine(x, y, 1, 0, now);
+		if (count == 5)
+			goto win;
+	}
+	else
+	{
+
+	}
 
 
 	return false;
+win:
+	board[x][y] = now;
+	gameEnd = true;
+	winner = now;
+	return true;
 }
 
 int Omok::CountLine(int fromX, int fromY, int dirX, int dirY, Color now)

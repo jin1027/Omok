@@ -21,9 +21,13 @@ public:
 	//don't Null.
 	void SetNow(Color);
 	Color GetNow();
+	Color GetWinner();
+	bool IsGameEnd();
 private:
 	Color board[boardLen][boardLen];
 	Color now;
+	bool gameEnd = true;
+	Color winner = Color::Null;
 
 	void InitializeBoard();
 	void ColorChange();
