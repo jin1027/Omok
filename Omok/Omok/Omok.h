@@ -33,4 +33,5 @@ private:
 	int CountLine(int fromX, int fromY, int dirX, int dirY, Color now);
 	//if other color	 break;
 	int CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now);
+	bool IsInvalidLoc(int x, int y);
 };

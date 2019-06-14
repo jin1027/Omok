@@ -97,3 +97,8 @@ int Omok::CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now)
 
 	return 0;
 }
+
+bool Omok::IsInvalidLoc(int x, int y)
+{
+	return (x < 0) || (x >= boardLen) || (y < 0) || (y >= boardLen);
+}
