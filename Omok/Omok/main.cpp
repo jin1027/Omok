@@ -14,11 +14,10 @@ const int WINDOW_HEIGHT = 960;
 
 Location beforeMouse(0, 0);
 Location nowMouse(0, 0);
-bool mouseDown = false;
 
 //double buffering
 
-HDC board;
+HDC buffer;
 HBITMAP bitmap;
 HWND winHandle;
 HDC winCon;
@@ -36,29 +35,23 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 		winCon = GetDC(hwnd);
-		board = CreateCompatibleDC(winCon);
+		buffer = CreateCompatibleDC(winCon);
 		bitmap = CreateCompatibleBitmap(winCon, WINDOW_WIDTH, WINDOW_HEIGHT);
-		SelectObject(board, bitmap);
-		BitBlt(board, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, 0, 0, WHITENESS);
+		SelectObject(buffer, bitmap);
+		BitBlt(buffer, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, 0, 0, WHITENESS);
 		return 0;
 	case WM_PAINT:
 		PAINTSTRUCT ps;
-		ps.fErase = 1;
 		BeginPaint(winHandle, &ps);
 
 		//
 
-		BitBlt(ps.hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, board, 0, 0, SRCCOPY);
+		BitBlt(ps.hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, buffer, 0, 0, SRCCOPY);
 		EndPaint(winHandle, &ps);
 		return 0;
 	case WM_LBUTTONDOWN:
-		mouseDown = true;
-		return 0;
-	case WM_LBUTTONUP:
-		mouseDown = false;
-		return 0;
 	case WM_DESTROY:
-		DeleteDC(board);
+		DeleteDC(buffer);
 		DeleteObject(bitmap);
 		ReleaseDC(hwnd, winCon);
 		PostQuitMessage(0);
