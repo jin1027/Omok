@@ -3,6 +3,7 @@
 #include <time.h>
 #include <math.h>
 
+#include "DrawSet.h"
 #include "Location.h"
 #include "Omok.h"
 
@@ -17,8 +18,7 @@ Location nowMouse(0, 0);
 
 //double buffering
 
-HDC buffer;
-HBITMAP bitmap;
+DrawSet buffer;
 HWND winHandle;
 HDC winCon;
 HINSTANCE instance;
@@ -35,23 +35,19 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 		winCon = GetDC(hwnd);
-		buffer = CreateCompatibleDC(winCon);
-		bitmap = CreateCompatibleBitmap(winCon, WINDOW_WIDTH, WINDOW_HEIGHT);
-		SelectObject(buffer, bitmap);
-		BitBlt(buffer, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, 0, 0, WHITENESS);
+		buffer.Initialize(winCon, WINDOW_WIDTH, WINDOW_HEIGHT);
 		return 0;
 	case WM_PAINT:
 		PAINTSTRUCT ps;
 		BeginPaint(winHandle, &ps);
+		//BitBlt(buffer, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, 0, 0, WHITENESS);
 
 		//
 
-		BitBlt(ps.hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, buffer, 0, 0, SRCCOPY);
+		BitBlt(ps.hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, buffer.hdc, 0, 0, SRCCOPY);
 		EndPaint(winHandle, &ps);
 		return 0;
 	case WM_DESTROY:
-		DeleteDC(buffer);
-		DeleteObject(bitmap);
 		ReleaseDC(hwnd, winCon);
 		PostQuitMessage(0);
 		return 0;
@@ -78,25 +74,17 @@ void SetWindowClass(WNDCLASSEX& winc)
 void MessageLoop()
 {
 	MSG msg;
-	long time, time2;
-	time = clock();
 
-	while (1)
+	while (GetMessage(&msg, NULL, 0, 0))
 	{
-		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		if (msg.message == WM_QUIT)
 		{
-			if (msg.message == WM_QUIT)
-			{
-				PostQuitMessage(0);
-				return;
-			}
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-			continue;
+			PostQuitMessage(0);
+			return;
 		}
-		if ((time2 = clock()) - time < 1000 / 1000)
-			continue;
-		InvalidateRect(winHandle, NULL, true);
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+		continue;
 	}
 }
 

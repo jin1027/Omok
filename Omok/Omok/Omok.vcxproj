@@ -19,14 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DrawSet.h" />
     <ClInclude Include="include.h" />
     <ClInclude Include="Location.h" />
     <ClInclude Include="Omok.h" />
+    <ClInclude Include="OmokView.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DrawSet.cpp" />
     <ClCompile Include="Location.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Omok.cpp" />
+    <ClCompile Include="OmokView.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

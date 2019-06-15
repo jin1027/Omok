@@ -24,6 +24,12 @@
     <ClInclude Include="Omok.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="OmokView.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawSet.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Location.cpp">
@@ -33,6 +39,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Omok.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="OmokView.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawSet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
