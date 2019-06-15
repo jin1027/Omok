@@ -6,6 +6,12 @@
 #include "DrawSet.h"
 #include "Location.h"
 #include "Omok.h"
+#include "OmokView.h"
+
+#pragma comment(lib, "msimg32.lib")
+
+Omok omok;
+OmokView view;
 
 const wchar_t CLASSNAME[] = L"Omok";
 const wchar_t WINDOWNAME[] = L"Omok";
@@ -36,16 +42,24 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 		winCon = GetDC(hwnd);
 		buffer.Initialize(winCon, WINDOW_WIDTH, WINDOW_HEIGHT);
+		view.Initialize(winCon);
+
+		omok.Set(10, 10);//todo delete
 		return 0;
 	case WM_PAINT:
 		PAINTSTRUCT ps;
 		BeginPaint(winHandle, &ps);
-		//BitBlt(buffer, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, 0, 0, WHITENESS);
 
-		//
+		view.View(ps.hdc, omok);
+		SetPixel(ps.hdc, 100, 100, RGB(0, 0, 0));
 
-		BitBlt(ps.hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, buffer.hdc, 0, 0, SRCCOPY);
 		EndPaint(winHandle, &ps);
+		return 0;
+	case WM_KEYDOWN:
+		if (wParam == VK_SPACE)
+		{
+			InvalidateRect(winHandle, NULL, true);//Re-draw
+		}
 		return 0;
 	case WM_DESTROY:
 		ReleaseDC(hwnd, winCon);

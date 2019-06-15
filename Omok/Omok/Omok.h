@@ -6,9 +6,15 @@ enum class Color
 {
 	BLACK, WHITE, Null
 };
-const int boardLen = 15;
+
+extern "C" 
+{
+	const int boardLen = 15;
+}
+
 class Omok
 {
+	friend class OmokView;
 public:
 	Omok();
 	~Omok();
