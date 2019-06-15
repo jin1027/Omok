@@ -83,22 +83,23 @@ bool Omok::CanSetAsRenzu(int x, int y, Color now)
 		int is3 = 0;
 		int is4 = 0;
 
-		count = CountLine(x, y, 1, 0, now);
+		count = Check3344(x, y, 1, 0, now);
 		if (count == 3)
 			is3++;
 		if (count == 4)
 			is4++;
-		count = CountLine(x, y, 1, 1, now);
+		count = Check3344(x, y, 1, 1, now);
 		if (count == 3)
 			is3++;
 		if (count == 4)
 			is4++;
-		count = CountLine(x, y, 1, -1, now);
+		count = Check3344(x, y, 1, -1, now);
 		if (count == 3)
 			is3++;
 		if (count == 4)
 			is4++;
-		if (is3 >= 2 || is4 >= 4)
+
+		if (is3 >= 2 || is4 >= 2)
 			is3344 = true;
 	}
 
@@ -180,17 +181,17 @@ int Omok::CountLine(int fromX, int fromY, int dirX, int dirY, Color now)
 	return count;
 }
 
-int Omok::CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now)
+int Omok::Check3344(int fromX, int fromY, int dirX, int dirY, Color now)
 {
 	int count = 0;
 	int re;
-	bool wasNull = false;
+	int nullWas = 0;
 	Color color;
 
 	int tempX = fromX;
 	int tempY = fromY;
 
-	for (int reverse = 0; reverse < 2; reverse++)
+	for (int reverse = 0; reverse < 2; reverse++)//reverse don't use.
 	{
 		for (re = 1; ; re++)
 		{
@@ -208,19 +209,23 @@ int Omok::CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now)
 			}
 			else if (color == Color::Null)
 			{
-				if (wasNull)
+				if (nullWas)//if null exist 2, it is not 33 or 44 condition.
 					return count;
-				wasNull = true;
+				nullWas = re;
 				continue;
 			}
-			else//other color : return 0;
-				return 0;
+			else//other color
+				if (re - 1 == nullWas)//before was space. now will check opposite dir, or break;
+					break;
+				else//it is blocked 3 or 4
+					return 0;
 		}
 
 		fromX = tempX;
 		fromY = tempY;
 		dirX = -dirX;
 		dirY = -dirY;
+		nullWas = 0;
 	}
 	return count;
 }

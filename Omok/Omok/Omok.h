@@ -50,6 +50,6 @@ private:
 	1
 	only call for check 33, 44
 	*/
-	int CountLongLine(int fromX, int fromY, int dirX, int dirY, Color now);
+	int Check3344(int fromX, int fromY, int dirX, int dirY, Color now);
 	bool IsInvalidLoc(int x, int y);
 };
