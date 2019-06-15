@@ -27,7 +27,7 @@ void DrawSet::DrawCircle(Real r, COLORREF color, COLORREF invisible)
 			Real distance = sqrt(xDis * xDis + yDis * yDis);
 
 			if (distance <= r)
-				SetPixel(hdc, x, y, WHITENESS);
+				SetPixel(hdc, x, y, color);
 			else
 				SetPixel(hdc, x, y, invisible);
 		}
