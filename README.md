@@ -1,3 +1,3 @@
 Omok.
 
-don't work yet
+can see
