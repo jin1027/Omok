@@ -49,10 +49,11 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_PAINT:
 		PAINTSTRUCT ps;
 		BeginPaint(winHandle, &ps);
+		BitBlt(buffer.hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, 0, 0, WHITENESS);
 
-		view.View(ps.hdc, omok);
-		SetPixel(ps.hdc, 100, 100, RGB(0, 0, 0));
+		view.View(buffer.hdc, omok);
 
+		BitBlt(ps.hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, buffer.hdc, 0, 0, SRCCOPY);
 		EndPaint(winHandle, &ps);
 		return 0;
 	case WM_KEYDOWN:
