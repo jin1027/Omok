@@ -11,13 +11,14 @@ void OmokView::Initialize(HDC hdc)
 		HDC& boardHDC = board.hdc;
 		int x;
 		int from;
-		const int monitorX0 = ArrayToMonitor(0);
-		const int monitorY0 = ArrayToMonitor(0);
-		const int monitorXmax = ArrayToMonitor(boardLen - 1);
-		const int monitorYmax = ArrayToMonitor(boardLen - 1);
+		int radius = stoneSize / 2;
+		const int monitorX0 = ArrayToMonitor(0) + radius;
+		const int monitorY0 = ArrayToMonitor(0) + radius;
+		const int monitorXmax = ArrayToMonitor(boardLen - 1) + radius;
+		const int monitorYmax = ArrayToMonitor(boardLen - 1) + radius;
 		for (x = 0; x < boardLen; x++)
 		{
-			from = ArrayToMonitor(x);
+			from = ArrayToMonitor(x) + radius;
 
 			MoveToEx(boardHDC, from, monitorY0, NULL);
 			LineTo(boardHDC, from, monitorYmax);
@@ -53,8 +54,8 @@ void OmokView::View(HDC buffer, Omok& omok)
 			else
 				continue;
 
-			toX = ArrayToMonitor(x) - stoneSize / 2;
-			toY = ArrayToMonitor(y) - stoneSize / 2;
+			toX = ArrayToMonitor(x);
+			toY = ArrayToMonitor(y);
 			TransparentBlt(buffer, toX, toY, stoneSize, stoneSize, draw->hdc, 0, 0, stoneSize, stoneSize, invisible);
 		}
 }

@@ -9,7 +9,7 @@
 
 const int space = 10;
 const int stoneSize = 30;
-const int boardSize = boardLen * (stoneSize + space);
+const int boardSize = boardLen * (stoneSize + space) + space;
 
 const COLORREF boardColor = RGB(204, 102, 0);
 const COLORREF invisible = RGB(255, 0, 255);
