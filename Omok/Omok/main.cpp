@@ -19,8 +19,7 @@ const wchar_t WINDOWNAME[] = L"Omok";
 const int WINDOW_WIDTH = 1280;
 const int WINDOW_HEIGHT = 960;
 
-Location beforeMouse(0, 0);
-Location nowMouse(0, 0);
+Location buttonDownAt(0, 0);
 
 //double buffering
 
@@ -35,6 +34,11 @@ void PrintError(const wchar_t* err)
 	MessageBox(winHandle, err, L"ERROR", MB_OK);
 }
 
+void ReDraw()
+{
+	InvalidateRect(winHandle, NULL, true);
+}
+
 LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -43,8 +47,6 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		winCon = GetDC(hwnd);
 		buffer.Initialize(winCon, WINDOW_WIDTH, WINDOW_HEIGHT);
 		view.Initialize(winCon);
-
-		omok.Set(10, 10);//todo delete
 		return 0;
 	case WM_PAINT:
 		PAINTSTRUCT ps;
@@ -56,10 +58,22 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		BitBlt(ps.hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, buffer.hdc, 0, 0, SRCCOPY);
 		EndPaint(winHandle, &ps);
 		return 0;
+	case WM_LBUTTONDOWN:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+
+		x = view.MonitorToArray(x);
+		y = view.MonitorToArray(y);
+
+		omok.Set(x, y);
+		ReDraw();
+	}
+		return 0;
 	case WM_KEYDOWN:
 		if (wParam == VK_SPACE)
 		{
-			InvalidateRect(winHandle, NULL, true);//Re-draw
+			ReDraw();
 		}
 		return 0;
 	case WM_DESTROY:
