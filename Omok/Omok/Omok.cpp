@@ -37,6 +37,8 @@ bool Omok::Set(Location loc)
 
 bool Omok::Set(int x, int y)
 {
+	if (gameEnd)
+		return false;
 	if (IsInvalidLoc(x, y))
 		return false;
 	if (board[x][y] != Color::Null)
@@ -88,6 +90,11 @@ bool Omok::CanSetAsRenzu(int x, int y, Color now)
 			is3++;
 		if (count == 4)
 			is4++;
+		count = Check3344(x, y, 0, 1, now);
+		if (count == 3)
+			is3++;
+		if (count == 4)
+			is4++;
 		count = Check3344(x, y, 1, 1, now);
 		if (count == 3)
 			is3++;
@@ -109,6 +116,9 @@ bool Omok::CanSetAsRenzu(int x, int y, Color now)
 		count = CountLine(x, y, 1, 0, now);
 		if (count == 5)
 			goto win;
+		count = CountLine(x, y, 0, 1, now);
+		if (count == 5)
+			goto win;
 		count = CountLine(x, y, 1, 1, now);
 		if (count == 5)
 			goto win;
@@ -121,6 +131,9 @@ bool Omok::CanSetAsRenzu(int x, int y, Color now)
 	else
 	{
 		count = CountLine(x, y, 1, 0, now);
+		if (count >= 5)
+			goto win;
+		count = CountLine(x, y, 0, 1, now);
 		if (count >= 5)
 			goto win;
 		count = CountLine(x, y, 1, 1, now);
@@ -144,7 +157,7 @@ win:
 
 int Omok::CountLine(int fromX, int fromY, int dirX, int dirY, Color now)
 {
-	int count = 0;
+	int count = 1;//don't check fromX, fromY
 	int re;
 	Color color;
 
@@ -183,7 +196,7 @@ int Omok::CountLine(int fromX, int fromY, int dirX, int dirY, Color now)
 
 int Omok::Check3344(int fromX, int fromY, int dirX, int dirY, Color now)
 {
-	int count = 0;
+	int count = 1;//don't check fromX, fromY
 	int re;
 	int nullWas = 0;
 	Color color;
@@ -193,7 +206,7 @@ int Omok::Check3344(int fromX, int fromY, int dirX, int dirY, Color now)
 
 	for (int reverse = 0; reverse < 2; reverse++)//reverse don't use.
 	{
-		for (re = 1; ; re++)
+		for (re = 1; true; re++)
 		{
 			fromX += dirX;
 			fromY += dirY;
@@ -210,7 +223,7 @@ int Omok::Check3344(int fromX, int fromY, int dirX, int dirY, Color now)
 			else if (color == Color::Null)
 			{
 				if (nullWas)//if null exist 2, it is not 33 or 44 condition.
-					return count;
+					break;
 				nullWas = re;
 				continue;
 			}
