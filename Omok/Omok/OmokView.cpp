@@ -48,9 +48,9 @@ void OmokView::View(HDC buffer, Omok& omok)
 		for (y = 0; y < boardLen; y++)
 		{
 			if (omok.board[x][y] == Color::BLACK)
-				draw = &white;
-			else if (omok.board[x][y] == Color::WHITE)
 				draw = &black;
+			else if (omok.board[x][y] == Color::WHITE)
+				draw = &white;
 			else
 				continue;
 
